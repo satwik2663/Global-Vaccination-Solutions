@@ -1,6 +1,8 @@
-# Global-Vaccination-Solutions
-###### Java Swing Application for healthcare domain to help the vaccination shortage across various under developed countries
-Project Summary: To create a prototype of a global vaccination solution with an aim to provide vaccinations and health service to the country with high child mortality rates.
+# Global-Vaccination-Solution: A Java Swing Application for healthcare domain 
+
+**Aim**: To help the vaccination shortage across various under developed countries
+
+**Project Summary**: To create a prototype of a global vaccination solution with an aim to provide vaccinations and health service to the country with high child mortality rates.
 
 **Key Functionalities**: 
 1. Creating a system to provide and maintain data of vaccinations available in a country with an interconnected network. 
