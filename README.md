@@ -1,6 +1,6 @@
 # Global-Vaccination-Solution: A Java Swing Application for healthcare domain 
 
-##Aim
+## Aim
 To help the vaccination shortage across various under developed countries
 
 ## Project Summary 
