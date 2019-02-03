@@ -1,0 +1,374 @@
+package userinterface.AdministrativeRole;
+
+import Business.ConfigureASystem;
+import Business.EcoSystem;
+import Business.Enterprise.Enterprise;
+import Business.Enterprise.VaccinationEnterprise;
+import Business.Network.Network;
+import Business.Organization.Organization;
+import Business.UserAccount.UserAccount;
+import Business.WorkQueue.DoctorByHosWorkRequest;
+import Business.WorkQueue.DoctorByOrgWorkRequest;
+import Business.WorkQueue.VaccineWorkRequest;
+import Business.WorkQueue.WorkRequest;
+import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
+import java.awt.CardLayout;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author raunak
+ */
+public class HospitalViewServicesJPanel extends javax.swing.JPanel {
+
+    private JPanel userProcessContainer;
+    private Enterprise enterprise;
+    private Network network;
+    private UserAccount userAccount;
+    private EcoSystem ecosystem;
+
+    /**
+     * Creates new form AdminWorkAreaJPanel
+     */
+    public HospitalViewServicesJPanel(JPanel userProcessContainer, Enterprise enterprise, Network network, UserAccount userAccount, EcoSystem ecosystem) {
+        initComponents();
+        this.userProcessContainer = userProcessContainer;
+        this.enterprise = enterprise;
+        this.network = network;
+        this.userAccount = userAccount;
+        this.ecosystem = ecosystem;
+        //ecosystem = ConfigureASystem.configure();
+        populateRequestByHosTable();
+        populateRequestByOrgTable();
+        //valueLabel.setText(enterprise.getName());
+    }
+
+    public void populateRequestByHosTable() {
+        DefaultTableModel model = (DefaultTableModel) docRequestByHosJTable.getModel();
+
+        model.setRowCount(0);
+
+        for (Network net : ecosystem.getNetworkList()) {
+
+            for (Enterprise ent : net.getEnterpriseDirectory().getEnterpriseList()) {
+                if (ent.getEnterpriseType().getValue().equalsIgnoreCase("Hospital")) {
+                    for (WorkRequest request : ent.getWorkQueue().getWorkRequestList()) {
+                        if (request instanceof DoctorByHosWorkRequest) {
+                            Object[] row = new Object[9];
+                            row[0] = ((DoctorByHosWorkRequest) request);
+                            row[1] = ((DoctorByHosWorkRequest) request).getrequestingDate();
+                            row[2] = ((DoctorByHosWorkRequest) request).getSender();
+                            row[3] = ((DoctorByHosWorkRequest) request).getReceiver();
+                            row[4] = ((DoctorByHosWorkRequest) request).getRequestDate();
+                            row[5] = ((DoctorByHosWorkRequest) request).getResolveDate();
+                            row[6] = net;
+                            row[7] = ((DoctorByHosWorkRequest) request).getStatus();
+                            row[8] = ((DoctorByHosWorkRequest) request).getMessage();
+           // String result = ((StaffWorkRequest) request).getTestResult();
+                            //row[3] = result == null ? "Waiting" : result;
+
+                            model.addRow(row);
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    public void populateRequestByOrgTable() {
+        DefaultTableModel model = (DefaultTableModel) docRequestByOrgJTable.getModel();
+
+        model.setRowCount(0);
+
+        for (Enterprise ent : network.getEnterpriseDirectory().getEnterpriseList()) {
+            if (ent.getEnterpriseType().getValue().equalsIgnoreCase("Orphanage")) {
+                for (WorkRequest request : ent.getWorkQueue().getWorkRequestList()) {
+                    if (request instanceof DoctorByOrgWorkRequest) {
+                        Object[] row = new Object[8];
+                        row[0] = ((DoctorByOrgWorkRequest) request);
+                        row[1] = ((DoctorByOrgWorkRequest) request).getrequestingDate();
+                        row[2] = ((DoctorByOrgWorkRequest) request).getSender();
+                        row[3] = ((DoctorByOrgWorkRequest) request).getReceiver();
+                        row[4] = ((DoctorByOrgWorkRequest) request).getRequestDate();
+                        row[5] = ((DoctorByOrgWorkRequest) request).getResolveDate();
+                        //row[6] = net;i
+                        row[6] = ((DoctorByOrgWorkRequest) request).getStatus();
+                        row[7] = ((DoctorByOrgWorkRequest) request).getMessage();
+           // String result = ((StaffWorkRequest) request).getTestResult();
+                        // row[3] = result == null ? "Waiting" : result;
+
+                        model.addRow(row);
+
+                    }
+                }
+
+            }
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        AcceptForHosJButton = new javax.swing.JButton();
+        refreshJButton = new javax.swing.JButton();
+        backBtn = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        docRequestByHosJTable = new javax.swing.JTable();
+        PhysicianNameForHosTextField = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        docRequestByOrgJTable = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        PhysicianNameForOrgTextField = new javax.swing.JTextField();
+        AcceptForOrgJButton = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        refreshJButton1 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+
+        setBackground(new java.awt.Color(0, 153, 204));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        AcceptForHosJButton.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        AcceptForHosJButton.setText("Accept Request");
+        AcceptForHosJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AcceptForHosJButtonActionPerformed(evt);
+            }
+        });
+        add(AcceptForHosJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 290, -1, -1));
+
+        refreshJButton.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        refreshJButton.setText("Refresh Table");
+        refreshJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshJButtonActionPerformed(evt);
+            }
+        });
+        add(refreshJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 290, -1, -1));
+
+        backBtn.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        backBtn.setText("<< Back");
+        backBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backBtnActionPerformed(evt);
+            }
+        });
+        add(backBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 650, -1, -1));
+
+        docRequestByHosJTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        docRequestByHosJTable.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        docRequestByHosJTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Physician Name", "Requested for Date", "Sender", "Receiver", "Requested Date", "Accepted Date", "Requested by Country", "Status", "Comments"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(docRequestByHosJTable);
+
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 1310, 150));
+
+        PhysicianNameForHosTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PhysicianNameForHosTextFieldActionPerformed(evt);
+            }
+        });
+        add(PhysicianNameForHosTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 250, 230, -1));
+
+        jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        jLabel2.setText("Physician Name :");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(367, 250, 120, 30));
+
+        docRequestByOrgJTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        docRequestByOrgJTable.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        docRequestByOrgJTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Physician Name", "Requested for Date", "Sender", "Receiver", "Requested Date", "Accepted Date", "Status", "Comments"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(docRequestByOrgJTable);
+
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 1310, 160));
+
+        jLabel3.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        jLabel3.setText("Physician Name :");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 610, -1, -1));
+
+        PhysicianNameForOrgTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PhysicianNameForOrgTextFieldActionPerformed(evt);
+            }
+        });
+        add(PhysicianNameForOrgTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 610, 230, -1));
+
+        AcceptForOrgJButton.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        AcceptForOrgJButton.setText("Accept Request");
+        AcceptForOrgJButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AcceptForOrgJButtonActionPerformed(evt);
+            }
+        });
+        add(AcceptForOrgJButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 650, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Broadway", 1, 24)); // NOI18N
+        jLabel4.setText("Physicians requested by Orphanages ");
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 340, 700, 70));
+
+        refreshJButton1.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        refreshJButton1.setText("Refresh Table");
+        refreshJButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshJButton1ActionPerformed(evt);
+            }
+        });
+        add(refreshJButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 650, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Broadway", 1, 24)); // NOI18N
+        jLabel5.setText("Physicians requested by Hospitals  ");
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, 700, 50));
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void AcceptForHosJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AcceptForHosJButtonActionPerformed
+        int selectedRow = docRequestByHosJTable.getSelectedRow();
+
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(null, "Please select a row");
+            return;
+        } else {
+
+            if (PhysicianNameForHosTextField.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Please enter the physician name");
+                return;
+            } else {
+
+                String ent = docRequestByHosJTable.getValueAt(selectedRow, 2).toString();
+
+                if (ent.equalsIgnoreCase(userAccount.getUsername())) {
+                    JOptionPane.showMessageDialog(null, "Cannot accept this request");
+                    return;
+                }
+
+                DoctorByHosWorkRequest request = (DoctorByHosWorkRequest) docRequestByHosJTable.getValueAt(selectedRow, 0);
+                if (request.getStatus().equalsIgnoreCase("Accepted")) {
+
+                    JOptionPane.showMessageDialog(null, "Request already acknowledged");
+                } else {
+                    request.setReceiver(userAccount);
+                    request.setResolveDate(new Date());
+                    request.setStatus("Accepted");
+                    request.setdoctorName(PhysicianNameForHosTextField.getText());
+                    populateRequestByHosTable();
+                }
+            }
+        }
+PhysicianNameForHosTextField.setText("");
+    }//GEN-LAST:event_AcceptForHosJButtonActionPerformed
+
+    private void refreshJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButtonActionPerformed
+        populateRequestByHosTable();
+    }//GEN-LAST:event_refreshJButtonActionPerformed
+
+    private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
+        // TODO add your handling code here:
+        userProcessContainer.remove(this);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.previous(userProcessContainer);
+    }//GEN-LAST:event_backBtnActionPerformed
+
+    private void PhysicianNameForHosTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PhysicianNameForHosTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PhysicianNameForHosTextFieldActionPerformed
+
+    private void PhysicianNameForOrgTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PhysicianNameForOrgTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PhysicianNameForOrgTextFieldActionPerformed
+
+    private void AcceptForOrgJButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AcceptForOrgJButtonActionPerformed
+        // TODO add your handling code here:
+
+        int selectedRow = docRequestByOrgJTable.getSelectedRow();
+        if (selectedRow < 0) {
+            return;
+        } else {
+
+            if (PhysicianNameForOrgTextField.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Please enter the physician name");
+                return;
+            } else {
+
+                String ent = docRequestByOrgJTable.getValueAt(selectedRow, 2).toString();
+
+                DoctorByOrgWorkRequest request = (DoctorByOrgWorkRequest) docRequestByOrgJTable.getValueAt(selectedRow, 0);
+                if (request.getStatus().equalsIgnoreCase("Accepted")) {
+
+                    JOptionPane.showMessageDialog(null, "Request already acknowledged");
+                } else {
+                    request.setReceiver(userAccount);
+                    request.setResolveDate(new Date());
+                    request.setStatus("Accepted");
+                    request.setdoctorName(PhysicianNameForOrgTextField.getText());
+                    populateRequestByOrgTable();
+                }}}
+        PhysicianNameForOrgTextField.setText("");
+                
+    }//GEN-LAST:event_AcceptForOrgJButtonActionPerformed
+
+    private void refreshJButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshJButton1ActionPerformed
+        populateRequestByOrgTable();
+    }//GEN-LAST:event_refreshJButton1ActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AcceptForHosJButton;
+    private javax.swing.JButton AcceptForOrgJButton;
+    private javax.swing.JTextField PhysicianNameForHosTextField;
+    private javax.swing.JTextField PhysicianNameForOrgTextField;
+    private javax.swing.JButton backBtn;
+    private javax.swing.JTable docRequestByHosJTable;
+    private javax.swing.JTable docRequestByOrgJTable;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton refreshJButton;
+    private javax.swing.JButton refreshJButton1;
+    // End of variables declaration//GEN-END:variables
+
+}
