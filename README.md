@@ -11,6 +11,9 @@ Help the vaccination shortage across various under-developed countries with prov
 ## Project Summary 
 To create a prototype of a global vaccination solution with an aim to provide vaccinations and health service to the country with high child mortality rates.
 
+## APPROACH - Object Model
+![Capture](https://user-images.githubusercontent.com/37238004/55279970-9dd5a400-52f5-11e9-982e-ce00a93b0815.JPG)
+
 ## Key Functionalities
 1. Creating a system to provide and maintain data of vaccinations available in a country with an interconnected network. 
 2. As per the trend of increasing mortality rates, creating a platform for physicians to provide medical training to chosen physicians in a country. 
